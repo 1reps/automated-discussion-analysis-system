@@ -1,4 +1,4 @@
-package com.adas.infrastructure.config;
+package com.adas.presentation.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry.addMapping("/api/**")
                     .allowedOrigins(
                         // 개발 기본(Vite): http://localhost:5173
                         "http://localhost:5173"
