@@ -1,0 +1,22 @@
+# IDE/OS
+.idea/
+*.iml
+.DS_Store
+
+# Env
+.env
+.env.*
+
+# Java/Gradle outputs
+backend/**/.gradle/
+backend/**/build/
+
+# Python
+backend/**/.venv/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/.pytest_cache/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

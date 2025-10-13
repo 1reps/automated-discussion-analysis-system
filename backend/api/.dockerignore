@@ -1,0 +1,18 @@
+# IDE
+.idea/
+*.iml
+
+# Java/Gradle
+backend/api/.gradle/
+backend/api/build/
+
+# 공통
+.DS_Store
+.env
+
+#
+.git
+.gradle
+build
+.idea
+.vscode
