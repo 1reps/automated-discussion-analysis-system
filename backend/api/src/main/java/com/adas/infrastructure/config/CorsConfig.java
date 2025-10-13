@@ -1,4 +1,4 @@
-package com.adas.api.config;
+package com.adas.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +14,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                // 개발 기본(Vite): http://localhost:5173
-                                "http://localhost:5173"
-                        )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(false);
+                    .allowedOrigins(
+                        // 개발 기본(Vite): http://localhost:5173
+                        "http://localhost:5173"
+                    )
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                    .allowedHeaders("*")
+                    .allowCredentials(false);
             }
         };
     }

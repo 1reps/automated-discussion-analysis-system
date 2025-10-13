@@ -1,3 +1,7 @@
 spring:
   application:
     name: adas
+
+logging:
+  level:
+    com.adas.api: INFO
