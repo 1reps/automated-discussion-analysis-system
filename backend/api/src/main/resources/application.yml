@@ -1,6 +1,9 @@
 spring:
   application:
     name: adas
+  docker:
+    compose:
+      enabled: false
 
 logging:
   level:
