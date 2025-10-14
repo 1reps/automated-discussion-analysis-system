@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "processing-core"
+version = "0.1.0"
+description = "Shared processing core for STT/Diarization services"
+requires-python = ">=3.10"
+authors = [{name="ADAS"}]
+dependencies = []
+
+[tool.setuptools]
+packages = ["processing_core"]
