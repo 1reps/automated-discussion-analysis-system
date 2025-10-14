@@ -52,8 +52,8 @@ dependencies {
     testRuntimeOnly("com.h2database:h2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // OpenAPI/Swagger UI (Springdoc)
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    // OpenAPI/Swagger UI (Springdoc) — align with Spring Boot 3.5.x
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 }
 
 tasks.withType<Test> {
