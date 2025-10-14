@@ -1,19 +1,19 @@
 package com.adas.application;
 
+import com.adas.application.dto.ProcessResponse;
 import com.adas.domain.audio.DiarizationSegmentEntity;
 import com.adas.domain.audio.Recording;
 import com.adas.domain.audio.SpeakerTurn;
 import com.adas.domain.audio.TranscriptSegment;
+import com.adas.infrastructure.external.DiarizationClient;
+import com.adas.infrastructure.external.SttClient;
+import com.adas.infrastructure.external.dto.DiarizationResponse;
+import com.adas.infrastructure.external.dto.SttResponse;
 import com.adas.infrastructure.media.MediaProbeService;
 import com.adas.infrastructure.repository.DiarizationSegmentRepository;
 import com.adas.infrastructure.repository.RecordingRepository;
 import com.adas.infrastructure.repository.SpeakerTurnRepository;
 import com.adas.infrastructure.repository.TranscriptSegmentRepository;
-import com.adas.infrastructure.external.DiarizationClient;
-import com.adas.infrastructure.external.SttClient;
-import com.adas.infrastructure.external.dto.DiarizationResponse;
-import com.adas.infrastructure.external.dto.SttResponse;
-import com.adas.application.dto.ProcessResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

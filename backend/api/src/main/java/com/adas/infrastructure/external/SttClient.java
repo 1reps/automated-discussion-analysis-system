@@ -7,10 +7,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.util.MultiValueMap;
 
 /**
  * STT(Speech-To-Text) Python 서비스 호출용 인프라 클라이언트.
@@ -25,7 +25,9 @@ public class SttClient {
         this.webClient = webClient;
     }
 
-    /** 파일 전사 요청. */
+    /**
+     * 파일 전사 요청.
+     */
     public SttResponse transcribe(MultipartFile file, String language) {
         MultipartBodyBuilder mb = new MultipartBodyBuilder();
         String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "upload";

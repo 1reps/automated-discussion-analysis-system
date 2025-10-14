@@ -7,10 +7,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.util.MultiValueMap;
 
 /**
  * Diarization(화자 분리) Python 서비스 호출용 인프라 클라이언트.
@@ -25,7 +25,9 @@ public class DiarizationClient {
         this.webClient = webClient;
     }
 
-    /** 화자 분리 요청. */
+    /**
+     * 화자 분리 요청.
+     */
     public DiarizationResponse diarize(MultipartFile file, String language, Integer maxSpeakers) {
         MultipartBodyBuilder mb = new MultipartBodyBuilder();
         String filename = file.getOriginalFilename() != null ? file.getOriginalFilename() : "upload";

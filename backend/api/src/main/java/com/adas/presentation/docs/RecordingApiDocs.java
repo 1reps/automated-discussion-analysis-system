@@ -14,15 +14,18 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Recordings", description = "저장된 녹음/세그먼트/턴 조회")
 public interface RecordingApiDocs {
 
-  @Operation(summary = "녹음 기본 정보 조회")
-  @ApiResponses({@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
-  ResponseEntity<ApiResponse<RecordingResponse>> getRecording(Long id);
+    @Operation(summary = "녹음 기본 정보 조회")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
+    ResponseEntity<ApiResponse<RecordingResponse>> getRecording(Long id);
 
-  @Operation(summary = "세그먼트(전사/화자분리) 조회")
-  @ApiResponses({@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
-  ResponseEntity<ApiResponse<SegmentsResponse>> getSegments(Long id);
+    @Operation(summary = "세그먼트(전사/화자분리) 조회")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
+    ResponseEntity<ApiResponse<SegmentsResponse>> getSegments(Long id);
 
-  @Operation(summary = "병합된 화자 턴 조회")
-  @ApiResponses({@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
-  ResponseEntity<ApiResponse<List<SpeakerTurnResponse>>> getTurns(Long id);
+    @Operation(summary = "병합된 화자 턴 조회")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공", content = @Content)})
+    ResponseEntity<ApiResponse<List<SpeakerTurnResponse>>> getTurns(Long id);
 }
