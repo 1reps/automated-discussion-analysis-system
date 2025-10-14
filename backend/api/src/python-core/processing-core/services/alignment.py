@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Sequence
-
 from processing_core.services.diarization import DiarizationSegment
 from processing_core.services.stt.base import TranscriptSegment
+from typing import Sequence
 
 
 @dataclass
@@ -66,4 +65,3 @@ class AlignmentService:
     start = max(transcript.start_ms, diar.start_ms)
     end = min(transcript.end_ms, diar.end_ms)
     return end - start
-

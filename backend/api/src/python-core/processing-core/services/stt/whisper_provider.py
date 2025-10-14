@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import math
 from pathlib import Path
-from typing import Any, Optional, Sequence
-
 from processing_core.services.diarization import DiarizationSegment
-from processing_core.services.stt.base import STTProvider, TranscriptSegment, WordTiming
+from processing_core.services.stt.base import STTProvider, TranscriptSegment, \
+  WordTiming
+from typing import Any, Optional, Sequence
 
 try:
   from faster_whisper import WhisperModel  # type: ignore
@@ -127,7 +127,8 @@ class WhisperProvider(STTProvider):
     return results
 
 
-def _confidence_from_segment(segment: Any) -> Optional[float]:  # type: ignore[no-untyped-def]
+def _confidence_from_segment(segment: Any) -> Optional[
+  float]:  # type: ignore[no-untyped-def]
   no_speech_prob = getattr(segment, "no_speech_prob", None)
   logprob = getattr(segment, "avg_logprob", None)
 
@@ -139,4 +140,3 @@ def _confidence_from_segment(segment: Any) -> Optional[float]:  # type: ignore[n
     except OverflowError:
       return None
   return None
-

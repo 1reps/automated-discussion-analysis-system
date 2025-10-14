@@ -2,9 +2,8 @@
 Shared settings for processing services (no DB).
 """
 
-from typing import Optional
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -55,4 +54,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-

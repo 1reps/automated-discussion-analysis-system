@@ -1,6 +1,7 @@
 # 오디오 처리 아키텍처
 
 ## 목표
+
 (주요 용어는 `docs/glossary.md` 참고)
 
 - Siri/외부 마이크에서 수집한 음성을 원본 녹음과 메타데이터와 함께 저장한다.
@@ -9,6 +10,7 @@
 - STT 공급자(Whisper, Google 등)를 유연하게 교체할 수 있는 인터페이스를 유지한다.
 
 ## 상위 동작 흐름
+
 1. 인입 API가 오디오(webm/wav)와 선택적 힌트(언어, 장치, 태그)를 수신한다.
 2. API는 원본 파일을 워크 디렉터리에 저장하고 `Recording` 레코드를 `pending` 상태로 생성한다.
 3. API는 `RecordingPipeline.run` 작업을 FastAPI BackgroundTasks에 등록한다(향후 Celery/RQ로 대체 예정).
@@ -19,6 +21,7 @@
 8. `/recordings` API나 메타데이터 조회를 통해 결과를 확인한다.
 
 ## 시퀀스 다이어그램 (간단 뷰)
+
 ```mermaid
 sequenceDiagram
     participant Client
@@ -28,25 +31,27 @@ sequenceDiagram
     participant Pipeline as RecordingPipeline
     participant Diar as DiarizationService
     participant STT as STTProvider
-
-    Client->>API: POST /ingest/audio (file, metadata)
-    API->>Storage: 원본 파일 저장
-    API->>DB: Recording(pending) 생성
-    API-->>Pipeline: BackgroundTasks.enqueue(recording_id)
-    Pipeline->>DB: 상태 processing 갱신
-    Pipeline->>Diar: run(audio_path)
-    Diar-->>Pipeline: 화자 세그먼트
-    Pipeline->>STT: transcribe(audio_path, segments)
-    STT-->>Pipeline: 전사 세그먼트
-    Pipeline->>Pipeline: AlignmentService.align()
-    Pipeline->>DB: diar/transcript/speaker_turn 저장
-    Pipeline->>DB: Recording 상태 completed/failed 갱신
-    Client-->>API: GET /recordings, /status 등으로 결과 확인
+    Client ->> API: POST /ingest/audio (file, metadata)
+    API ->> Storage: 원본 파일 저장
+    API ->> DB: Recording(pending) 생성
+    API -->> Pipeline: BackgroundTasks.enqueue(recording_id)
+    Pipeline ->> DB: 상태 processing 갱신
+    Pipeline ->> Diar: run(audio_path)
+    Diar -->> Pipeline: 화자 세그먼트
+    Pipeline ->> STT: transcribe(audio_path, segments)
+    STT -->> Pipeline: 전사 세그먼트
+    Pipeline ->> Pipeline: AlignmentService.align()
+    Pipeline ->> DB: diar/transcript/speaker_turn 저장
+    Pipeline ->> DB: Recording 상태 completed/failed 갱신
+    Client -->> API: GET /recordings, /status 등으로 결과 확인
 ```
 
 ## 컴포넌트 개요
+
 - **API 레이어(FastAPI)**
-    - 라우트: `/ingest/audio`(POST, GET), `/ingest/audio/{id}/status`, `/ingest/audio/{id}/metadata`, `/ingest/test-client`, `/recordings`, `/recordings/{id}`, `/recordings/{id}/segments`, `/health`, `/health/db`.
+    - 라우트: `/ingest/audio`(POST, GET), `/ingest/audio/{id}/status`, `/ingest/audio/{id}/metadata`,
+      `/ingest/test-client`, `/recordings`, `/recordings/{id}`, `/recordings/{id}/segments`,
+      `/health`, `/health/db`.
     - 인증(추후), 입력 검증, 스토리지 전달, 작업 큐 등록을 담당한다.
     - `app.deps`를 통해 DB 세션과 서비스 인스턴스를 의존성 주입받는다.
 
@@ -81,6 +86,7 @@ sequenceDiagram
     - 추후 Prometheus/OTel 메트릭을 연결한다.
 
 ## 시퀀스 상세 (텍스트)
+
 ```text
 Client -> /ingest/audio (POST)
   -> RecordingService.store_upload()
@@ -97,19 +103,23 @@ RecordingPipeline.run
 ```
 
 ## 프로바이더 추상화 & 마이그레이션
+
 - `STTProvider` 인터페이스로 Whisper, Google 등 공급자를 쉽게 교체합니다.
-- `TranscriptSegment` DTO는 `provider`, `start_ms`, `end_ms`, `text`, `confidence`, `language`, `speaker_label`을 공통 필드로 사용합니다.
+- `TranscriptSegment` DTO는 `provider`, `start_ms`, `end_ms`, `text`, `confidence`, `language`,
+  `speaker_label`을 공통 필드로 사용합니다.
 - 기본값은 faster-whisper 기반 `WhisperProvider`이며 설치가 필요합니다.
 - Google STT 스트리밍 결과를 DTO 세그먼트로 변환하는 어댑터가 필요합니다.
 - 동일한 샘플 오디오로 여러 프로바이더 결과를 비교하는 계약/통합 테스트를 유지합니다.
 
 ## 테스트 전략
+
 - 합성 세그먼트를 활용한 Alignment 단위 테스트.
 - 소형 녹음 파일을 활용한 STT 프로바이더 계약 테스트.
 - `/ingest/audio` 통합 테스트에서 스토리지/파이프라인을 목킹해 상태 전이를 검증.
 - 엔드투엔드 테스트로 실제 업로드 후 `/recordings/{id}`, `/segments`를 확인.
 
 ## 다음 구현 단계
+
 1. Pyannote/Whisper 실제 inference를 연결하고 ffprobe 기반 길이 계산, GPU/CPU 설정을 추가한다.
 2. Celery/RQ 등 외부 작업 큐를 도입해 파이프라인을 분리하고 재시도·모니터링을 강화한다.
 3. MinIO/S3 추상화를 추가해 오디오와 산출물을 객체 스토리지로 이전할 수 있도록 한다.

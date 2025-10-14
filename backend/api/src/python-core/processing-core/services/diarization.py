@@ -3,10 +3,10 @@
 
 from __future__ import annotations
 
-import os
-import contextlib
-import wave
 import audioop
+import contextlib
+import os
+import wave
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -23,7 +23,8 @@ class DiarizationSegment:
 
 
 class DiarizationService:
-  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> List[DiarizationSegment]:
+  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> \
+  List[DiarizationSegment]:
     raise NotImplementedError
 
 
@@ -58,7 +59,8 @@ class PyannoteDiarizationService(DiarizationService):
     self._min_speaker_duration_ms = int(max(min_speaker_duration, 0.0) * 1000)
     self._max_speaker_gap_ms = int(max(max_speaker_gap, 0.0) * 1000)
 
-  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> List[DiarizationSegment]:  # noqa: ARG002
+  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> \
+  List[DiarizationSegment]:  # noqa: ARG002
     inference_kwargs: dict[str, int] = {}
     if self._num_speakers is not None:
       inference_kwargs["num_speakers"] = self._num_speakers
@@ -87,7 +89,8 @@ class PyannoteDiarizationService(DiarizationService):
     raw_segments.sort(key=lambda segment: segment.start_ms)
     return self._postprocess_segments(raw_segments)
 
-  def _postprocess_segments(self, segments: List[DiarizationSegment]) -> List[DiarizationSegment]:
+  def _postprocess_segments(self, segments: List[DiarizationSegment]) -> List[
+    DiarizationSegment]:
     if not segments:
       return []
     merged: List[DiarizationSegment] = [segments[0]]
@@ -130,7 +133,8 @@ class RuleBasedDiarizationService(DiarizationService):
     self.energy_threshold_ratio = energy_threshold_ratio
     self.max_speakers = max(1, max_speakers)
 
-  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> List[DiarizationSegment]:  # noqa: ARG002
+  def run(self, audio_path: Path, *, language_hint: Optional[str] = None) -> \
+  List[DiarizationSegment]:  # noqa: ARG002
     pcm, sampwidth, sr = self._read_mono_pcm(audio_path)
     frame_len = int(self.frame_ms * sr / 1000)
     if frame_len <= 0:
@@ -139,7 +143,7 @@ class RuleBasedDiarizationService(DiarizationService):
     energies: list[float] = []
     step = frame_len * sampwidth
     for i in range(0, len(pcm), step):
-      chunk = pcm[i : i + step]
+      chunk = pcm[i: i + step]
       if len(chunk) < step:
         break
       rms = audioop.rms(chunk, sampwidth)
@@ -151,7 +155,8 @@ class RuleBasedDiarizationService(DiarizationService):
     sorted_e = sorted(energies)
     k = max(1, int(len(sorted_e) * 0.2))
     noise_floor = sum(sorted_e[:k]) / k
-    threshold = max(noise_floor * self.energy_threshold_ratio, noise_floor + 50.0)
+    threshold = max(noise_floor * self.energy_threshold_ratio,
+                    noise_floor + 50.0)
 
     speech_regions: list[tuple[int, int]] = []
     in_speech = False
@@ -216,4 +221,3 @@ class RuleBasedDiarizationService(DiarizationService):
       return frames, sampwidth, framerate
     mono = audioop.tomono(frames, sampwidth, 1, 0)
     return mono, sampwidth, framerate
-

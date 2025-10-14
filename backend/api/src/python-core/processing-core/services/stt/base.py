@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Protocol, Sequence
-
 from processing_core.services.diarization import DiarizationSegment
+from typing import Optional, Protocol, Sequence
 
 
 @dataclass
@@ -40,4 +39,3 @@ class STTProvider(Protocol):
       language: Optional[str] = None,
   ) -> Sequence[TranscriptSegment]:
     ...
-

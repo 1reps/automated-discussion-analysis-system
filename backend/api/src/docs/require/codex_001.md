@@ -2,7 +2,7 @@
 
 개요
 
-- 이 리포는 게이트웨이(API)(Spring Boot)와 두 개의 파이썬 마이크로서비스(STT, Diarization)를 함께 운    영합니다.
+- 이 리포는 게이트웨이(API)(Spring Boot)와 두 개의 파이썬 마이크로서비스(STT, Diarization)를 함께 운 영합니다.
 - 경량 기본값: STT=Whisper, Diarization=Rule 기반. 향후 Google STT/pyannote로 교체 가능.
 - 모든 외부 API는 /api/v1 프리픽스 사용.
 

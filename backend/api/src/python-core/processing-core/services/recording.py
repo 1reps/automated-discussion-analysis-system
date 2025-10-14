@@ -9,12 +9,11 @@ import mimetypes
 import shutil
 import subprocess
 from datetime import datetime
+from fastapi import UploadFile
 from pathlib import Path
+from pydantic import BaseModel, Field
 from typing import Optional
 from uuid import uuid4
-
-from fastapi import UploadFile
-from pydantic import BaseModel, Field
 
 
 class RecordingResult(BaseModel):
@@ -28,7 +27,8 @@ class RecordingResult(BaseModel):
 
 
 class RecordingService:
-  def __init__(self, base_dir: Path, max_upload_bytes: int, *, ffmpeg_bin: str = "ffmpeg") -> None:
+  def __init__(self, base_dir: Path, max_upload_bytes: int, *,
+      ffmpeg_bin: str = "ffmpeg") -> None:
     self.base_dir = base_dir
     self.max_upload_bytes = max_upload_bytes
     self.ffmpeg_bin = ffmpeg_bin
@@ -89,12 +89,14 @@ class RecordingService:
     }
     if converted:
       metadata["original_filename"] = source_filename
-      metadata["original_mime_type"] = (mimetypes.guess_type(source_filename)[0] if source_filename else None)
+      metadata["original_mime_type"] = (
+        mimetypes.guess_type(source_filename)[0] if source_filename else None)
       metadata["original_size_bytes"] = uploaded_size
       metadata["converted_to_wav"] = True
 
     metadata_path = dest_dir / "metadata.json"
-    metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding="utf-8")
+    metadata_path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2),
+                             encoding="utf-8")
 
     return RecordingResult(
       recording_id=recording_id,
@@ -168,4 +170,3 @@ class RecordingService:
     if resolved:
       return resolved
     raise ValueError("ffmpeg 실행 파일을 찾을 수 없습니다.")
-

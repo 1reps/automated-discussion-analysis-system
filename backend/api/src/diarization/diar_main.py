@@ -1,19 +1,21 @@
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Optional
-
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-
-from processing_core.settings import settings
+from pathlib import Path
+from processing_core.services.diarization import RuleBasedDiarizationService, \
+  PyannoteDiarizationService
 from processing_core.services.recording import RecordingService
-from processing_core.services.diarization import RuleBasedDiarizationService, PyannoteDiarizationService
+from processing_core.settings import settings
+from typing import Optional
 
 
 def allowed_origins():
   raw = (settings.ALLOWED_ORIGINS or "").strip()
-  return ["*"] if settings.ENV == "dev" or raw in ("", "*") else [x.strip() for x in raw.split(",") if x.strip()]
+  return ["*"] if settings.ENV == "dev" or raw in ("", "*") else [x.strip() for
+                                                                  x in
+                                                                  raw.split(",")
+                                                                  if x.strip()]
 
 
 app = FastAPI(title="Diarization Service", version="0.1.0", root_path="/api/v1")
@@ -25,7 +27,9 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-recording_service = RecordingService(base_dir=Path(settings.WORK_DIR), max_upload_bytes=settings.MAX_UPLOAD_MB * 1024 * 1024, ffmpeg_bin=settings.FFMPEG_BIN)
+recording_service = RecordingService(base_dir=Path(settings.WORK_DIR),
+                                     max_upload_bytes=settings.MAX_UPLOAD_MB * 1024 * 1024,
+                                     ffmpeg_bin=settings.FFMPEG_BIN)
 
 if (settings.DIARIZATION_PROVIDER or "rule").lower() == "pyannote":
   diar_service = PyannoteDiarizationService(
@@ -49,7 +53,8 @@ async def diarize(
     max_speakers: Optional[int] = Form(None),
 ):
   # store and normalize
-  stored = await recording_service.store_upload(file, language=language, source="diarization")
+  stored = await recording_service.store_upload(file, language=language,
+                                                source="diarization")
   wav_path = recording_service.get_raw_path(stored.recording_id)
 
   # override max speakers for rule-based
@@ -73,4 +78,3 @@ async def diarize(
 @app.get("/health")
 def health():
   return {"status": "ok", "env": settings.ENV}
-

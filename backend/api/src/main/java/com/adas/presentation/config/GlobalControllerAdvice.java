@@ -2,13 +2,11 @@ package com.adas.presentation.config;
 
 import com.adas.common.exception.CustomException;
 import com.adas.common.exception.NotFoundException;
-import com.adas.presentation.ApiResponse;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.handler.timeout.WriteTimeoutException;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.OffsetDateTime;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,60 +18,58 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 /**
- * 전역 예외 처리기.
- * - 모든 예외를 ApiResponse 실패 바디로 변환해 일관된 에러 형식을 유지한다.
+ * 전역 예외 처리기(ProblemDetail 기반). - Spring ProblemDetail(JSON Problem)로 일관된 오류 응답을 제공한다.
  */
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ApiResponse<Void>> handleCustom(CustomException exception) {
-        return ApiResponse.fail(HttpStatus.BAD_REQUEST, "BAD_REQUEST", exception.getMessage());
+    public ProblemDetail handleCustom(CustomException exception) {
+        return problem(HttpStatus.BAD_REQUEST, exception);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(NotFoundException exception) {
-        return ApiResponse.fail(HttpStatus.NOT_FOUND, "NOT_FOUND", exception.getMessage());
+    public ProblemDetail handleNotFound(NotFoundException exception) {
+        return problem(HttpStatus.NOT_FOUND, exception);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, MissingServletRequestParameterException.class})
-    public ResponseEntity<ApiResponse<Void>> handleBadRequest(Exception exception) {
-        Map<String, Object> details = new HashMap<>();
-        details.put("exception", exception.getClass().getSimpleName());
-        return ApiResponse.fail(HttpStatus.BAD_REQUEST, "BAD_REQUEST", safeMessage(exception), details);
+    public ProblemDetail handleBadRequest(Exception exception) {
+        return problem(HttpStatus.BAD_REQUEST, exception);
     }
 
     @ExceptionHandler({MultipartException.class, MaxUploadSizeExceededException.class})
-    public ResponseEntity<ApiResponse<Void>> handleUnsupported(Exception exception) {
-        Map<String, Object> details = new HashMap<>();
-        details.put("exception", exception.getClass().getSimpleName());
-        return ApiResponse.fail(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "UNSUPPORTED_MEDIA_TYPE", safeMessage(exception), details);
+    public ProblemDetail handleUnsupported(Exception exception) {
+        return problem(HttpStatus.UNSUPPORTED_MEDIA_TYPE, exception);
     }
 
     @ExceptionHandler({WebClientResponseException.class, HttpStatusCodeException.class})
-    public ResponseEntity<ApiResponse<Void>> handleUpstreamResponse(Exception exception) {
-        Map<String, Object> details = new HashMap<>();
-        details.put("exception", exception.getClass().getSimpleName());
-        // Python 서비스가 4xx/5xx를 반환한 경우 → 게이트웨이는 502로 래핑
-        return ApiResponse.fail(HttpStatus.BAD_GATEWAY, "BAD_GATEWAY", safeMessage(exception), details);
+    public ProblemDetail handleUpstreamResponse(Exception exception) {
+        // 상류 서비스가 4xx/5xx 응답 → 게이트웨이는 502로 래핑
+        return problem(HttpStatus.BAD_GATEWAY, exception);
     }
 
-    @ExceptionHandler({WebClientRequestException.class})
-    public ResponseEntity<ApiResponse<Void>> handleUpstreamRequest(WebClientRequestException exception) {
-        Map<String, Object> details = new HashMap<>();
-        details.put("exception", exception.getClass().getSimpleName());
-        // 타임아웃은 504, 그 외 네트워크 오류는 502
-        if (exception.getCause() instanceof ReadTimeoutException || exception.getCause() instanceof WriteTimeoutException) {
-            return ApiResponse.fail(HttpStatus.GATEWAY_TIMEOUT, "GATEWAY_TIMEOUT", safeMessage(exception), details);
-        }
-        return ApiResponse.fail(HttpStatus.BAD_GATEWAY, "BAD_GATEWAY", safeMessage(exception), details);
+    @ExceptionHandler(WebClientRequestException.class)
+    public ProblemDetail handleUpstreamRequest(WebClientRequestException exception) {
+        HttpStatus status =
+            (exception.getCause() instanceof ReadTimeoutException
+                || exception.getCause() instanceof WriteTimeoutException)
+                ? HttpStatus.GATEWAY_TIMEOUT
+                : HttpStatus.BAD_GATEWAY;
+        return problem(status, exception);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleException(Exception exception) {
-        Map<String, Object> details = new HashMap<>();
-        details.put("exception", exception.getClass().getSimpleName());
-        return ApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", safeMessage(exception), details);
+    public ProblemDetail handleException(Exception exception) {
+        return problem(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+    }
+
+    private static ProblemDetail problem(HttpStatus status, Exception exception) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(status, safeMessage(exception));
+        pd.setTitle(status.getReasonPhrase());
+        pd.setProperty("timestamp", OffsetDateTime.now());
+        pd.setProperty("exception", exception.getClass().getSimpleName());
+        return pd;
     }
 
     private static String safeMessage(Throwable t) {
