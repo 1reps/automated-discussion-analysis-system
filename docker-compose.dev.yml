@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    container_name: adas-api
+    environment:
+      # Spring external service URLs (Python containers in same network)
+      EXTERNAL_STT_BASE_URL: http://stt:8000/api/v1
+      EXTERNAL_STT_CONNECT_TIMEOUT_MS: 5000
+      EXTERNAL_STT_RESPONSE_TIMEOUT_MS: 30000
+      EXTERNAL_STT_READ_TIMEOUT_MS: 30000
+      EXTERNAL_STT_WRITE_TIMEOUT_MS: 30000
+      EXTERNAL_DIARIZATION_BASE_URL: http://diarization:8000/api/v1
+      EXTERNAL_DIARIZATION_CONNECT_TIMEOUT_MS: 5000
+      EXTERNAL_DIARIZATION_RESPONSE_TIMEOUT_MS: 60000
+      EXTERNAL_DIARIZATION_READ_TIMEOUT_MS: 60000
+      EXTERNAL_DIARIZATION_WRITE_TIMEOUT_MS: 60000
+      SPRING_PROFILES_ACTIVE: default
+    ports:
+      - "8081:8080"
+    depends_on:
+      - stt
+      - diarization
+
+  stt:
+    build:
+      context: .
+      dockerfile: backend/api/src/stt/Dockerfile
+    container_name: adas-stt
+    environment:
+      WORK_DIR: /tmp/ai-voice
+      ALLOWED_ORIGINS: "*"
+      WHISPER_MODEL_SIZE: small
+      WHISPER_WORD_TIMESTAMPS: "true"
+    ports:
+      - "8001:8000"
+
+  diarization:
+    build:
+      context: .
+      dockerfile: backend/api/src/diarization/Dockerfile.gpu
+    container_name: adas-diarization
+    environment:
+      WORK_DIR: /tmp/ai-voice
+      ALLOWED_ORIGINS: "*"
+      DIARIZATION_PROVIDER: rule
+    ports:
+      - "8002:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: adas-frontend
+    environment:
+      VITE_API_BASE: http://api:8080
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+networks:
+  default:
+    name: adas-net

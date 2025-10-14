@@ -2,11 +2,12 @@ FROM pytorch/pytorch:2.3.1-cuda12.1-cudnn8-runtime
 RUN apt-get update && apt-get install -y ffmpeg git && rm -rf /var/lib/apt/lists/*
 ENV HF_HUB_DISABLE_SYMLINKS=1
 WORKDIR /app
-COPY backend/python-core /opt/python-core
+# Build context is repo root in docker-compose.dev.yml
+COPY backend/api/src/python-core /opt/python-core
 RUN pip install --no-cache-dir -U pip && \
     pip install --no-cache-dir -e /opt/python-core
-COPY backend/diarization/requirements.txt requirements.txt
+COPY backend/api/src/diarization/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-COPY backend/diarization /app
+COPY backend/api/src/diarization /app
 ENV PYTHONUNBUFFERED=1
 CMD ["python","-m","uvicorn","diar_main:app","--host","0.0.0.0","--port","8000"]

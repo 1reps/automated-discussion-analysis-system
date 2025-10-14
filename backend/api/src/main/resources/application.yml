@@ -6,6 +6,12 @@ logging:
   level:
     com.adas.api: INFO
 
+springdoc:
+  swagger-ui:
+    path: /docs
+  api-docs:
+    path: /v3/api-docs
+
 media:
   ffprobe-path: ffprobe
   probe-timeout-ms: 5000

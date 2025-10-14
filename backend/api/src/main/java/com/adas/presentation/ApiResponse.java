@@ -48,7 +48,7 @@ public record ApiResponse<T>(
     }
 
     @JsonInclude(Include.NON_NULL)
-    public record ApiError(
+    private record ApiError(
         String code,
         String message,
         Map<String, Object> details
