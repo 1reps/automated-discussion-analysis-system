@@ -1,6 +1,19 @@
 version: '3.9'
 
 services:
+  db:
+    image: mysql:latest
+    container_name: adas-mysql
+    environment:
+      MYSQL_DATABASE: adas
+      MYSQL_USER: secret
+      MYSQL_PASSWORD: verysecret
+      MYSQL_ROOT_PASSWORD: verysecret
+    ports: 
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   api:
     build:
       context: ./backend/api
@@ -27,6 +40,7 @@ services:
     ports:
       - "8081:8080"
     depends_on:
+      - db
       - stt
       - diarization
 
@@ -66,6 +80,9 @@ services:
       - "5173:5173"
     depends_on:
       - api
+
+volumes:
+  mysql-data:
 
 networks:
   default:

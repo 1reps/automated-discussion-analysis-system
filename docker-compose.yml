@@ -7,7 +7,7 @@ services:
       MYSQL_USER: secret
       MYSQL_PASSWORD: verysecret
       MYSQL_ROOT_PASSWORD: verysecret
-    ports: ['3306:3306']
+    ports: ['3307:3306']
 
   api:
     labels:
@@ -19,8 +19,10 @@ services:
       DB_HOST: db
       DB_PORT: 3306
       DB_NAME: adas
+      DB_USER: secret
       DB_PASSWORD: verysecret
-      # SPRING_PROFILES_ACTIVE: dev
+      GOOGLE_APPLICATION_CREDENTIALS: /app/credentials/adas-stt-key.json
+      GOOGLE_PROJECT_ID: your-project-id
     depends_on: [db]
     # 외부 8081 -> 컨테이너 8080 (Spring Boot 기본 포트)
     ports: ['8081:8080']

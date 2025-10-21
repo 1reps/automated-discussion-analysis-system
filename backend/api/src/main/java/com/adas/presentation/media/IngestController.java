@@ -1,6 +1,6 @@
 package com.adas.presentation.media;
 
-import com.adas.application.MediaProcessingService;
+import com.adas.application.media.MediaProcessingService;
 import com.adas.application.dto.ProcessResponse;
 import com.adas.presentation.docs.IngestApiDocs;
 import java.util.HashMap;

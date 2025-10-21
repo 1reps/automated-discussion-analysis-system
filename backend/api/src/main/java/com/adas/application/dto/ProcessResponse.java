@@ -1,6 +1,6 @@
 package com.adas.application.dto;
 
-import com.adas.application.SpeechMergeService.Turn;
+import com.adas.domain.speech.Turn;
 import com.adas.infrastructure.external.dto.DiarizationResponse;
 import com.adas.infrastructure.external.dto.SttResponse;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.adas.presentation.media;
 
-import com.adas.application.RecordingQueryService;
+import com.adas.application.recording.RecordingQueryService;
 import com.adas.application.dto.SegmentsResponse;
 import com.adas.application.dto.SpeakerTurnResponse;
 import com.adas.application.dto.TranscriptSegmentResponse;

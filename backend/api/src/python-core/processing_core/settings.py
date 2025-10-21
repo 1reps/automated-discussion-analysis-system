@@ -33,10 +33,33 @@ class Settings(BaseSettings):
   WHISPER_CONDITION_ON_PREVIOUS_TEXT: bool = True
   WHISPER_WORD_TIMESTAMPS: bool = True
 
+  # Google Cloud STT Configuration
   GOOGLE_PROJECT_ID: Optional[str] = None
   GOOGLE_CREDENTIALS: Optional[str] = None
   GOOGLE_LANGUAGE: str = "ko-KR"
   GOOGLE_SAMPLE_RATE: int = 16000
+  
+  # Google STT Features
+  GOOGLE_ENABLE_WORD_TIME_OFFSETS: bool = True
+  GOOGLE_ENABLE_AUTOMATIC_PUNCTUATION: bool = True
+  GOOGLE_ENABLE_SPOKEN_PUNCTUATION: bool = False
+  GOOGLE_ENABLE_SPOKEN_EMOJIS: bool = False
+  GOOGLE_ENABLE_WORD_CONFIDENCE: bool = True
+  
+  # Google STT Model Configuration
+  GOOGLE_MODEL: str = "latest_long"  # latest_long, latest_short, command_and_search, phone_call, video, default
+  GOOGLE_USE_ENHANCED: bool = True
+  GOOGLE_AUDIO_ENCODING: str = "LINEAR16"  # LINEAR16, FLAC, MULAW, AMR, AMR_WB, OGG_OPUS, SPEEX_WITH_HEADER_BYTE
+  
+  # Google STT Alternative Settings
+  GOOGLE_MAX_ALTERNATIVES: int = 1
+  GOOGLE_PROFANITY_FILTER: bool = False
+  
+  # Google STT Speaker Diarization
+  GOOGLE_ENABLE_SPEAKER_DIARIZATION: bool = False
+  GOOGLE_DIARIZATION_SPEAKER_COUNT: Optional[int] = None
+  GOOGLE_MIN_SPEAKER_COUNT: Optional[int] = None
+  GOOGLE_MAX_SPEAKER_COUNT: Optional[int] = None
 
   WORK_DIR: str = "/tmp/ai-voice"
   FFMPEG_BIN: str = "ffmpeg"

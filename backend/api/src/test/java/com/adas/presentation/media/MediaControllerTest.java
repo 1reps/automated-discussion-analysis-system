@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.adas.application.MediaProcessingService;
-import com.adas.application.SpeechMergeService.Turn;
+import com.adas.application.media.MediaProcessingService;
+import com.adas.domain.speech.Turn;
 import com.adas.application.dto.ProcessResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -38,7 +38,7 @@ class MediaControllerTest {
     @DisplayName("/media/process 성공 시 ApiResponse 래핑으로 200을 반환한다")
     void process_ok() throws Exception {
         ProcessResponse resp =
-            new ProcessResponse("1", "ko", List.of(), List.of(), List.of(new Turn("S1", 0, 1000, "hi")));
+            new ProcessResponse("1", "ko", List.of(), List.of(), List.of(Turn.startSpeaking("S1", 0, 1000, "hi")));
         when(mediaProcessingService.process(any(), eq("ko"), eq(2))).thenReturn(resp);
 
         MockMultipartFile file =

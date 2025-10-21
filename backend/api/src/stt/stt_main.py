@@ -4,7 +4,7 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from processing_core.services.recording import RecordingService
-from processing_core.services.stt.whisper_provider import WhisperProvider
+from processing_core.services.stt.factory import STTProviderFactory
 from processing_core.settings import settings
 from typing import Optional
 
@@ -29,17 +29,9 @@ app.add_middleware(
 recording_service = RecordingService(base_dir=Path(settings.WORK_DIR),
                                      max_upload_bytes=settings.MAX_UPLOAD_MB * 1024 * 1024,
                                      ffmpeg_bin=settings.FFMPEG_BIN)
-stt_provider = WhisperProvider(
-  model_size=settings.WHISPER_MODEL_SIZE,
-  device=settings.WHISPER_DEVICE,
-  compute_type=settings.WHISPER_COMPUTE_TYPE,
-  download_root=Path(
-    settings.WHISPER_DOWNLOAD_ROOT) if settings.WHISPER_DOWNLOAD_ROOT else None,
-  beam_size=settings.WHISPER_BEAM_SIZE,
-  vad_filter=settings.WHISPER_VAD_FILTER,
-  condition_on_previous_text=settings.WHISPER_CONDITION_ON_PREVIOUS_TEXT,
-  word_timestamps=settings.WHISPER_WORD_TIMESTAMPS,
-)
+
+# Initialize STT provider using factory pattern
+stt_provider = STTProviderFactory.create_provider(settings)
 
 
 @app.post("/stt/transcribe")
@@ -77,4 +69,9 @@ async def transcribe(
 
 @app.get("/health")
 def health():
-  return {"status": "ok", "env": settings.ENV}
+  return {
+    "status": "ok", 
+    "env": settings.ENV,
+    "stt_provider": settings.STT_PROVIDER,
+    "available_providers": STTProviderFactory.get_available_providers()
+  }

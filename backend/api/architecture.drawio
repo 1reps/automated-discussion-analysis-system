@@ -1,0 +1,253 @@
+<mxfile host="app.diagrams.net" modified="2024-01-20T10:00:00.000Z" agent="5.0" version="22.1.16" etag="abc123" type="device">
+  <diagram name="ADAS Domain Architecture" id="domain-architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="ADAS - Domain Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Presentation Layer -->
+        <mxCell id="presentation-layer" value="Presentation Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="100" width="1500" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Controllers -->
+        <mxCell id="media-controller" value="MediaController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="100" y="120" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="recording-controller" value="RecordingController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="280" y="120" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="ingest-controller" value="IngestController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="460" y="120" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="transcript-controller" value="TranscriptController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="640" y="120" width="150" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Application Layer -->
+        <mxCell id="application-layer" value="Application Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="220" width="1500" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Application Services -->
+        <mxCell id="media-processing-service" value="MediaProcessingService&#xa;(media package)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="200" y="250" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="recording-query-service" value="RecordingQueryService&#xa;(recording package)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="250" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Domain Layer -->
+        <mxCell id="domain-layer" value="Domain Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="360" width="1500" height="400" as="geometry" />
+        </mxCell>
+        
+        <!-- Recording Domain -->
+        <mxCell id="recording-domain" value="Recording Domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="400" width="250" height="320" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="recording-entity" value="Recording&#xa;+ createFromUpload()&#xa;+ specifyDuration()&#xa;+ markAsProcessedBy()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="120" y="430" width="210" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="recording-repository" value="RecordingRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="120" y="530" width="210" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Transcript Domain -->
+        <mxCell id="transcript-domain" value="Transcript Domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="400" width="250" height="320" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="transcript-entity" value="TranscriptSegment&#xa;+ transcribeSegment()&#xa;+ correctTranscription()&#xa;+ adjustConfidence()&#xa;+ specifyLanguage()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="400" y="430" width="210" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="transcript-repository" value="TranscriptSegmentRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="400" y="550" width="210" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Diarization Domain -->
+        <mxCell id="diarization-domain" value="Diarization Domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="400" width="250" height="320" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="diarization-entity" value="DiarizationSegment&#xa;+ identifySpeaker()&#xa;+ adjustConfidence()&#xa;+ correctSpeakerLabel()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="680" y="430" width="210" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="diarization-repository" value="DiarizationSegmentRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="680" y="550" width="210" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Speaker Domain -->
+        <mxCell id="speaker-domain" value="Speaker Domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="940" y="400" width="250" height="320" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="speaker-entity" value="SpeakerTurn&#xa;+ createTurn()&#xa;+ extendTo()&#xa;+ appendText()&#xa;+ assignToSpeaker()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="960" y="430" width="210" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="speaker-repository" value="SpeakerTurnRepository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="960" y="550" width="210" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Speech Domain -->
+        <mxCell id="speech-domain" value="Speech Domain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="400" width="250" height="320" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="turn-model" value="Turn (Domain Model)&#xa;+ startSpeaking()&#xa;+ extendSpeech()&#xa;+ isSameSpeaker()&#xa;+ getDurationMs()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="430" width="210" height="100" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="speech-merge-service" value="SpeechMergeService&#xa;(Domain Service)&#xa;+ merge(STT, Diarization)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="550" width="210" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Infrastructure Layer -->
+        <mxCell id="infrastructure-layer" value="Infrastructure Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="800" width="1500" height="120" as="geometry" />
+        </mxCell>
+        
+        <!-- External Services -->
+        <mxCell id="stt-client" value="SttClient" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="200" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="diarization-client" value="DiarizationClient" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="350" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="media-probe-service" value="MediaProbeService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="500" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="database" value="Database&#xa;(JPA/Hibernate)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="840" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Dependencies Arrows -->
+        
+        <!-- Presentation to Application -->
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="media-controller" target="media-processing-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="recording-controller" target="recording-query-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="ingest-controller" target="media-processing-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="transcript-controller" target="recording-query-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Application to Domain -->
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="media-processing-service" target="recording-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="media-processing-service" target="speech-merge-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="recording-query-service" target="transcript-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="recording-query-service" target="speaker-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Domain Dependencies -->
+        <mxCell id="edge9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#ff9999;strokeWidth=2;" edge="1" parent="1" source="transcript-entity" target="recording-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#ff9999;strokeWidth=2;" edge="1" parent="1" source="diarization-entity" target="recording-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#ff9999;strokeWidth=2;" edge="1" parent="1" source="speaker-entity" target="recording-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeColor=#99ccff;strokeWidth=2;" edge="1" parent="1" source="speech-merge-service" target="transcript-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeColor=#99ccff;strokeWidth=2;" edge="1" parent="1" source="speech-merge-service" target="diarization-entity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Infrastructure Dependencies -->
+        <mxCell id="edge14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="media-processing-service" target="stt-client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="media-processing-service" target="diarization-client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="media-processing-service" target="media-probe-service">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Repository to Database -->
+        <mxCell id="edge17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="recording-repository" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="transcript-repository" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="diarization-repository" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="edge20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=1;entryY=0;strokeColor=#cccccc;" edge="1" parent="1" source="speaker-repository" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend" value="Legend" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="960" width="60" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend1" value="Domain Reference (Recording ← Others)" style="text;html=1;strokeColor=#ff9999;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="100" y="980" width="200" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend2" value="Domain Service Usage (Speech → Transcript/Diarization)" style="text;html=1;strokeColor=#99ccff;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="320" y="980" width="280" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="legend3" value="Infrastructure Dependencies" style="text;html=1;strokeColor=#cccccc;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="620" y="980" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Domain Principles Box -->
+        <mxCell id="principles" value="DDD Principles Applied:&#xa;• Single Responsibility per Domain&#xa;• Unidirectional Dependencies&#xa;• Domain-Driven Method Names&#xa;• Immutable Domain Models&#xa;• Repository Pattern" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=left;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="960" width="300" height="100" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

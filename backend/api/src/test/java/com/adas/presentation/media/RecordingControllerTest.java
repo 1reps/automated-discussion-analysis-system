@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.adas.application.RecordingQueryService;
+import com.adas.application.recording.RecordingQueryService;
 import com.adas.application.dto.DiarizationSegmentResponse;
 import com.adas.application.dto.RecordingResponse;
 import com.adas.application.dto.SegmentsResponse;
